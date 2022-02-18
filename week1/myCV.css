@@ -1,17 +1,38 @@
-/*纯色背景*/
+/*basic-setting*/
 
-.背景 {
-    background-color: black;
+body {
+    padding: 0;
+    margin: 0;
+    background-color: #f3f3f3;
+}
+
+h1 {
+    font-size: 28px;
+}
+
+h2 {
+    font-size: 18px;
+    border-bottom: 1px solid black;
 }
 
 
 /*topline*/
 
-.简历 {}
+.简历 {
+    background-color: white;
+    width: 900px;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
 
 .基本信息 {
-    height: 150px;
+    width: 500px;
+    height: 120px;
     text-align: center;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
 }
 
 .基本信息 .基本信息其他 {
@@ -23,14 +44,14 @@
 
 .基本信息 ul li {
     position: relative;
-    left: 5spx;
 }
 
 
-/*教育经历*/
+/*wrap*/
 
-
-/*实习&校园经历*/
-
-
-/*其他*/
+.wrap {
+    width: 800px;
+    position: relative;
+    float: left;
+    margin-left: 50px;
+}
