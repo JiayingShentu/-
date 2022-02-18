@@ -1,0 +1,36 @@
+/*纯色背景*/
+
+.背景 {
+    background-color: black;
+}
+
+
+/*topline*/
+
+.简历 {}
+
+.基本信息 {
+    height: 150px;
+    text-align: center;
+}
+
+.基本信息 .基本信息其他 {
+    position: relative;
+    width: 500px;
+    height: 50px;
+    font-size: small;
+}
+
+.基本信息 ul li {
+    position: relative;
+    left: 5spx;
+}
+
+
+/*教育经历*/
+
+
+/*实习&校园经历*/
+
+
+/*其他*/
