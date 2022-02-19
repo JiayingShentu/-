@@ -12,11 +12,26 @@ h1 {
 
 h2 {
     font-size: 18px;
-    border-bottom: 1px solid black;
+    border-bottom: 2px solid black;
+}
+
+ul {
+    font-size: small;
 }
 
 
 /*topline*/
+
+.校徽 {
+    position: absolute;
+    float: left;
+    transform: translate(75px, 40px)
+}
+
+.校徽 img {
+    width: 132px;
+    height: 40px;
+}
 
 .简历 {
     background-color: white;
@@ -28,11 +43,15 @@ h2 {
 
 .基本信息 {
     width: 500px;
-    height: 120px;
+    height: 150px;
     text-align: center;
     position: relative;
     left: 50%;
     transform: translateX(-50%);
+}
+
+.留白 {
+    height: 36px;
 }
 
 .基本信息 .基本信息其他 {
@@ -40,6 +59,7 @@ h2 {
     width: 500px;
     height: 50px;
     font-size: small;
+    line-height: 10px;
 }
 
 .基本信息 ul li {
@@ -50,8 +70,50 @@ h2 {
 /*wrap*/
 
 .wrap {
-    width: 800px;
+    width: 740px;
     position: relative;
     float: left;
-    margin-left: 50px;
+    margin-left: 80px;
+}
+
+.wrap .教育经历 .学校,
+.wrap .项目,
+.wrap .需求 {
+    font-weight: bold;
+}
+
+.wrap .教育经历 .时间,
+.wrap .实习经历 .时间,
+.wrap .校园经历 .时间 {
+    position: relative;
+    float: right;
+    margin-top: 0;
+}
+
+.wrap .项目列表 {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.wrap .需求列表,
+.wrap .技能列表 {
+    list-style-type: none;
+    margin: 5px;
+    padding: 0;
+}
+
+.wrap .教育经历 p,
+.wrap .实习经历 p,
+.wrap .校园经历 p {
+    font-size: small;
+    margin: 5px 0px 0px 0px;
+}
+
+.wrap .校园经历 .项目 {
+    margin: 15px 0px 0px 0px;
+}
+
+.wrap ul {
+    line-height: 24px;
 }
