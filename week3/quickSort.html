@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Quick Sort</title>
+    <script>
+        /**快排算法**/
+        const sort = (array, left, right) => {
+            if (left >= right) {
+                return;
+            }
+            let i = left;
+            let j = right;
+            let baseNum = array[right];
+            while (i < j) {
+                if (array[i] < baseNum) {
+                    i++;
+                } else {
+                    array[j] = array[i];
+                    array[i] = baseNum;
+                }
+                if (array[j - 1] > baseNum) {
+                    j--;
+                } else {
+                    array[i] = array[j];
+                    array[j] = baseNum;
+                }
+            }
+            sort(array, 0, i - 1);
+            sort(array, i + 1, right);
+            return array;
+        }
+        const quickSort = (array) => {
+                var result = sort(array, 0, array.length - 1);
+                return result;
+            }
+            /**输入与按钮的处理**/
+        window.onload = function() {
+            var btn = document.getElementById("submit");
+            btn.onclick = function() {
+                var arrayInput = document.getElementById("input").value; /*获取输入*/
+                var output = document.getElementById("output");
+                array = arrayInput.split(' '); /*输入转化为数组*/
+                var sortArray = quickSort(array);
+                console.log(sortArray);
+                var textNode = document.createTextNode(arrayInput);
+                output.appendChild(textNode);
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <div>
+        <input type="text" name="input" class="sort" id="input" value="" />
+        <button type="submit" id="submit">Submit</button>
+        <div>
+            <p id="output"></p>
+        </div>
+    </div>
+</body>
+
+</html>
