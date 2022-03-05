@@ -6,45 +6,50 @@
     <title>Quick Sort</title>
     <script>
         /**快排算法**/
-        const sort = (array, left, right) => {
+        sort = (array, left, right) => {
             if (left >= right) {
                 return;
             }
             let i = left;
             let j = right;
             let baseNum = array[right];
+            console.log(i, j, baseNum, 'yes')
             while (i < j) {
-                if (array[i] < baseNum) {
+                while ((i < j) && (array[i] <= baseNum)) {
                     i++;
-                } else {
-                    array[j] = array[i];
-                    array[i] = baseNum;
+                    console.log('i=' + i, 'j=' + j, 'array[i]=' + array[i], 'array[j]=' + array[j], 'baseNum=' + baseNum);
                 }
-                if (array[j - 1] > baseNum) {
+                console.log(i, j, '+');
+                array[j] = array[i];
+                array[i] = baseNum;
+                while (i < j && array[j] >= baseNum) {
                     j--;
-                } else {
-                    array[i] = array[j];
-                    array[j] = baseNum;
+                    console.log('i=' + i, 'j=' + j, 'array[i]=' + array[i], 'array[j]=' + array[j], 'baseNum=' + baseNum);
                 }
+                console.log(i, j, '-');
+                array[i] = array[j];
+                array[j] = baseNum;
             }
-            sort(array, 0, i - 1);
-            sort(array, i + 1, right);
-            return array;
+            console.log(array);
+            sort(array, left, j - 1);
+            sort(array, j + 1, right);
         }
-        const quickSort = (array) => {
-                var result = sort(array, 0, array.length - 1);
-                return result;
+        quickSort = (array) => {
+                sort(array, 0, array.length - 1);
+                return;
             }
             /**输入与按钮的处理**/
         window.onload = function() {
-            var btn = document.getElementById("submit");
-            btn.onclick = function() {
+            var oSubmit = document.getElementById("submit");
+            oSubmit.onclick = function() {
                 var arrayInput = document.getElementById("input").value; /*获取输入*/
                 var output = document.getElementById("output");
-                array = arrayInput.split(' '); /*输入转化为数组*/
-                var sortArray = quickSort(array);
-                console.log(sortArray);
-                var textNode = document.createTextNode(arrayInput);
+                var array = arrayInput.split(','); /*输入转化为数组*/
+                for (let i = 0; i < array.length; i++) {
+                    array[i] = Number(array[i]);
+                }
+                quickSort(array);
+                var textNode = document.createTextNode(array);
                 output.appendChild(textNode);
             }
         }
@@ -53,9 +58,14 @@
 
 <body>
     <div>
-        <input type="text" name="input" class="sort" id="input" value="" />
-        <button type="submit" id="submit">Submit</button>
         <div>
+            <h3>快速排序</h3>
+            <p>请你输入一组数，用英文逗号 ',' 隔开</p>
+        </div>
+        <input type="text" name="input" class="sort" id="input" value="" />
+        <button type="submit" id="submit">提交</button>
+        <div>
+            <p>结果为：</p>
             <p id="output"></p>
         </div>
     </div>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Quick Sort</title>
+    <script>
+        /**去重**/
+        removeDuplicates = (array) => {
+                let newArray = [];
+                for (let i = 0; i < array.length; i++) {
+                    console.log(newArray, array[i]);
+                    if (newArray.indexOf(array[i]) == -1) {
+                        newArray.push(array[i]);
+                    }
+                }
+                return newArray;
+            }
+            /**输入与按钮的处理**/
+        window.onload = function() {
+            var oSubmit = document.getElementById("submit");
+            oSubmit.onclick = function() {
+                var arrayInput = document.getElementById("input").value; /*获取输入*/
+                var output = document.getElementById("output");
+                var array = arrayInput.split(','); /*输入转化为数组*/
+                newArray = removeDuplicates(array)
+                var textNode = document.createTextNode(newArray);
+                output.appendChild(textNode);
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <div>
+        <div>
+            <h3>数组去重</h3>
+            <p>请你输入一组数，用英文逗号 ',' 隔开</p>
+        </div>
+        <input type="text" name="input" class="sort" id="input" value="" />
+        <button type="submit" id="submit">提交</button>
+        <div>
+            <p>结果为：</p>
+            <p id="output"></p>
+        </div>
+    </div>
+</body>
+
+</html>
