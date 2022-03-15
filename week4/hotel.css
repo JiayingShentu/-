@@ -59,7 +59,15 @@ table th {
 }
 
 table td {
-    height: 20px;
+    height: 30px;
     word-wrap: break-word;
     word-break: break-all;
+}
+
+table .del {
+    color: #87ceeb;
+}
+
+table .del:hover {
+    color: #00a2ff;
 }
