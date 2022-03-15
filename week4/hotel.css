@@ -1,0 +1,65 @@
+/*caption*/
+
+.caption {
+    font-family: Arial, Helvetica, sans-serif;
+    text-align: center;
+    font-weight: bolder;
+}
+
+
+/*button*/
+
+.btn {
+    position: relative;
+    font-family: Arial, Helvetica, sans-serif;
+    text-align: center;
+    margin: 0 auto;
+}
+
+.btn .add,
+.btn .save {
+    width: 100px;
+    margin: 0 10px;
+    padding: 5px;
+    background-color: white;
+    border: 1.5px solid #a0a0a0;
+    cursor: pointer;
+}
+
+.btn .add:hover,
+.btn .save:hover {
+    background-color: skyblue;
+    border: 1.5px solid #a0a0a0;
+}
+
+
+/*table*/
+
+.table {
+    position: relative;
+    font-size: 12px;
+    font-family: Arial, Helvetica, sans-serif;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    margin: 20px auto;
+}
+
+.table table {
+    table-layout: fixed;
+    border-collapse: collapse;
+    width: 90%;
+}
+
+table th {
+    height: 60px;
+    word-wrap: break-word;
+    word-break: break-all;
+    border: 1px solid grey;
+}
+
+table td {
+    height: 20px;
+    word-wrap: break-word;
+    word-break: break-all;
+}
