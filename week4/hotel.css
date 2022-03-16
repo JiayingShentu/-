@@ -66,8 +66,14 @@ table td {
 
 table .del {
     color: #87ceeb;
+    cursor: pointer;
 }
 
 table .del:hover {
     color: #00a2ff;
+}
+
+table input {
+    width: 20px;
+    border: 1px solid grey;
 }
