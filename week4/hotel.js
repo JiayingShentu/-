@@ -38,8 +38,8 @@ function csvToTable(content) {
         addItem(tr, 'delete'); //删除键
 
         oBody.appendChild(tr);
-
     }
+    judge();
 }
 
 function addItem(father, son) {
@@ -81,6 +81,7 @@ function addRow() {
     addItem(tr, 'delete');
 
     oBody.appendChild(tr);
+    judge();
 }
 
 //编辑操作
@@ -98,9 +99,10 @@ function edit(obj) {
         let inputData = item.value;
         obj.innerHTML = inputData;
         parent.removeChild(parent.lastElementChild);
-
+        judge();
     }
     console.log(data);
+
 }
 
 //保存文件操作
@@ -151,16 +153,58 @@ function download(filename, text) {
 //判断数据是否合理
 function judge() {
     var row = document.getElementsByClassName('row');
-    //地点
-    for (let i = 0; i < row.length; i++) {
-        console.log(i);
-        var data = row[i].getElementsByClassName('edit');
-        if (data[2] + data[3] + data[4] + data[5] + data[6] + data[7] != 100) {}
 
+    for (let i = 0; i < row.length; i++) {
+        var item = row[i].getElementsByClassName('edit');
+        var data = [];
+        for (let j = 0; j < item.length; j++) {
+            data[j] = parseInt(item[j].innerHTML);
+        }
+        //地点
+        var place = data[2] + data[3] + data[4] + data[5] + data[6] + data[7];
+        if (place != 100) {
+            for (let a = 2; a < 8; a++) {
+                item[a].style.backgroundColor = 'pink';
+            }
+        } else {
+            for (let a = 2; a < 8; a++) {
+                item[a].style.backgroundColor = 'white';
+            }
+        }
+        //住宿原因
+        var reason = data[8] + data[9];
+        if (reason != 100) {
+            item[8].style.backgroundColor = '#f1ef6f';
+            item[9].style.backgroundColor = '#f1ef6f';
+        } else {
+            item[8].style.backgroundColor = 'white';
+            item[9].style.backgroundColor = 'white';
+        }
+        //预定方式
+        var method = data[10] + data[11] + data[12];
+        if (method != 100) {
+            item[10].style.backgroundColor = '#7afa9a';
+            item[11].style.backgroundColor = '#7afa9a';
+            item[12].style.backgroundColor = '#7afa9a';
+        } else {
+            item[10].style.backgroundColor = 'white';
+            item[11].style.backgroundColor = 'white';
+            item[12].style.backgroundColor = 'white';
+        }
+        //年龄
+        var age = data[13] + data[14] + data[15] + data[16];
+        if (age != 100) {
+            for (let a = 13; a < 17; a++) {
+                item[a].style.backgroundColor = '#d4b8f8';
+            }
+        } else {
+            for (let a = 13; a < 17; a++) {
+                item[a].style.backgroundColor = 'white';
+            }
+        }
     }
-    //原因
-    //预定方式
-    //年龄
+
+
+
 
 }
-judge();
