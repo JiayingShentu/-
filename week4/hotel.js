@@ -1,5 +1,3 @@
-var row = 0;
-
 //加载文件
 function urlToBlob() {
     let xhr = new XMLHttpRequest();
@@ -27,19 +25,17 @@ function csvToTable(content) {
     // 以换行符行分割数据
     var monthList = content.split("\n");
     // 以逗号分割每行的数据
-    for (i = 1; i < monthList.length - 1; i++) {
-        row++;
+    for (let i = 1; i < monthList.length - 1; i++) {
         var array = monthList[i].split(",");
         tr = document.createElement("tr");
 
         //每行内容前面增加月份
         td = document.createElement("td");
-        td.append(row);
+        td.append(i);
         tr.appendChild(td);
 
         // 对每行的内容遍历到td标签去
         for (j = 0; j < array.length; j++) {
-
             td = document.createElement("td");
             td.append(array[j]);
             tr.appendChild(td);
@@ -48,8 +44,7 @@ function csvToTable(content) {
         //对每行内容后面添加删除键
         td = document.createElement("td");
         td.setAttribute('class', 'del');
-        td.setAttribute('onclick', 'deleteRow()')
-        td.setAttribute('id', row - 1);
+        td.setAttribute('onclick', 'deleteRow(this)')
         td.append('delete');
         tr.appendChild(td);
 
@@ -57,32 +52,32 @@ function csvToTable(content) {
 
     }
 }
-/*
-function button() {
-    deleteRow();
+
+function deleteRow(obj) {
+    var oParent = obj.parentNode;
+    var oGrandParent = oParent.parentNode;
+    oGrandParent.removeChild(oParent);
 }
 
-button();
-*/
-/*
-function deleteRow() {
-    let oDel = document.getElementsByClassName('del');
-    let oBody = document.getElementById('tBody');
-    for (let i = 0; i < oDel.length; i++) {
-        oDel[i].onclick = function() {
-            oBody.removeChild(oBody.childNodes[i]);
-        }
-    }
-}*/
-function deleteRow() {
-    console.log(this.id);
-}
-/*
 function addRow() {
-    row++;
     var oBody = document.getElementById("tbody");
     tr = document.createElement("tr");
+    //每行内容前面增加月份
     td = document.createElement("td");
-    td.append(row);
+    td.append(0);
     tr.appendChild(td);
-}*/
+    // 对每行的内容遍历到td标签去
+    for (let i = 0; i < 20; i++) {
+        td = document.createElement("td");
+        td.append(0);
+        tr.appendChild(td);
+    }
+    //对每行内容后面添加删除键
+    td = document.createElement("td");
+    td.setAttribute('class', 'del');
+    td.setAttribute('onclick', 'deleteRow(this)')
+    td.append('delete');
+    tr.appendChild(td);
+
+    oBody.appendChild(tr);
+}
