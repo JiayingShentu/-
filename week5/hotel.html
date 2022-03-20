@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>hotel</title>
+    <link rel="stylesheet" type="text/css" href="hotel.css" />
+
+</head>
+
+<body>
+    <div class="caption">
+        <h1>Hotel operation data</h1>
+    </div>
+    <div class="btn">
+        <button class="add" type="button" onclick="addRow()">Add a row</button>
+        <button class="save" type="button" onclick="saveFile()">Save File</button>
+    </div>
+    <div class="table">
+        <table class="tb">
+            <thead>
+                <tr>
+                    <th>month</th>
+                    <th>female</th>
+                    <th>local</th>
+                    <th>USA</th>
+                    <th>SA</th>
+                    <th>EU</th>
+                    <th>MEA</th>
+                    <th>ASL</th>
+                    <th>businessmen</th>
+                    <th>tourists</th>
+                    <th>DR</th>
+                    <th>agency</th>
+                    <th>AC</th>
+                    <th>u20</th>
+                    <th>20to35</th>
+                    <th>35to55</th>
+                    <th>m55</th>
+                    <th>price</th>
+                    <th>LoS</th>
+                    <th>occupancy</th>
+                    <th>conventions</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody id="tbody">
+            </tbody>
+        </table>
+    </div>
+    <div id="chart" style="width: 300px;height: 200px;"></div>
+    <script src="echarts.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.3.1/dist/echarts.min.js"></script>
+    <script src="hotel.js"></script>
+
+</body>
+
+</html>
