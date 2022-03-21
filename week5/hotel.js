@@ -206,45 +206,79 @@ function judge() {
 
 }
 
-
-
 function drawChart() {
-    //得到月份
-    var rows = document.getElementsByClassName('row');
-    for (let i = 0; i < rows.length; i++) {
-        var items = rows[i].getElementsByClassName('edit');
-        var data = [];
-        for (let j = 0; j < items.length; j++) {
-            data[j] = parseInt(items[j].innerHTML);
-        }
+    var thead = document.getElementsByTagName('thead')[0];
+    var head = thead.getElementsByTagName('th');
+    for (let i = 1; i < head.length - 1; i++) {
+        head[i].setAttribute('onclick', 'show(this)');
     }
+}
+
+drawChart();
+
+function show(obj) {
+    var head = ['month', 'female', 'local', 'USA', 'SA', 'EU', 'MEA', 'ASL',
+        'businessmen', 'tourists', 'DR', 'agency', 'AC', 'u20', '20to35', '35to55',
+        'm55', 'price', 'LoS', 'occupancy', 'conventions'
+    ];
+    var index;
+    for (let i = 0; i < head.length; i++) {
+        if (obj.innerHTML == head[i]) index = i;
+    }
+
+    //得到数据
+    var rows = document.getElementsByClassName('row');
     var months = [];
     var tmpData = [];
-    for (let i = 0; i < rows.length; i++) {
-        months[i] = toString(rows[i][0]);
-        tmpData[i] = rows[i][1];
-        console.log(row[i][1]);
+    var str = '';
+    for (let j = 0; j < rows.length; j++) {
+        var items = rows[j].getElementsByClassName('edit');
+        months[j] = items[0].innerHTML;
+        tmpData[j] = parseInt(items[index].innerHTML);
     }
-    console.log('months', months);
-    console.log('data', tmpData)
-        ////////////////////////////////////
+    if (index >= 2 && index <= 16) {
+        str = ' /%';
+    } else {
+        str = '';
+    }
+
+    //展示数据
     var chartDom = document.getElementById('chart');
     var myChart = echarts.init(chartDom);
     var option;
     option = {
+
+        title: {
+            left: 'center',
+            text: head[index] + ' chart'
+
+        },
+        grid: {
+            x: 40,
+            y: 72,
+            x2: 10,
+            y2: 64,
+        },
         xAxis: {
             type: 'category',
-            data: months
+            data: months,
+            name: 'month',
+            nameLocation: 'center',
+            nameTextStyle: { lineHeight: 28 }
         },
         yAxis: {
-            type: 'value'
+            type: 'value',
+            name: head[index] + str,
+            nameLocation: 'center',
+            nameTextStyle: { lineHeight: 36 }
         },
         series: [{
             data: tmpData,
             type: 'line'
+        }, {
+            data: tmpData,
+            type: 'bar'
         }]
     };
     myChart.setOption(option);
 }
-
-drawChart();

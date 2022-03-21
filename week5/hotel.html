@@ -15,40 +15,42 @@
     <div class="btn">
         <button class="add" type="button" onclick="addRow()">Add a row</button>
         <button class="save" type="button" onclick="saveFile()">Save File</button>
+
+
     </div>
     <div class="table">
         <table class="tb">
             <thead>
                 <tr>
-                    <th>month</th>
-                    <th>female</th>
-                    <th>local</th>
-                    <th>USA</th>
-                    <th>SA</th>
-                    <th>EU</th>
-                    <th>MEA</th>
-                    <th>ASL</th>
-                    <th>businessmen</th>
-                    <th>tourists</th>
-                    <th>DR</th>
-                    <th>agency</th>
-                    <th>AC</th>
-                    <th>u20</th>
-                    <th>20to35</th>
-                    <th>35to55</th>
-                    <th>m55</th>
-                    <th>price</th>
-                    <th>LoS</th>
-                    <th>occupancy</th>
-                    <th>conventions</th>
-                    <th>操作</th>
+                    <th class="month">month</th>
+                    <th class="head">female</th>
+                    <th class="head">local</th>
+                    <th class="head">USA</th>
+                    <th class="head">SA</th>
+                    <th class="head">EU</th>
+                    <th class="head">MEA</th>
+                    <th class="head">ASL</th>
+                    <th class="head">businessmen</th>
+                    <th class="head">tourists</th>
+                    <th class="head">DR</th>
+                    <th class="head">agency</th>
+                    <th class="head">AC</th>
+                    <th class="head">u20</th>
+                    <th class="head">20to35</th>
+                    <th class="head">35to55</th>
+                    <th class="head">m55</th>
+                    <th class="head">price</th>
+                    <th class="head">LoS</th>
+                    <th class="head">occupancy</th>
+                    <th class="head">conventions</th>
+                    <th class="handle">操作</th>
                 </tr>
             </thead>
             <tbody id="tbody">
             </tbody>
         </table>
     </div>
-    <div id="chart" style="width: 300px;height: 200px;"></div>
+    <div class="chart" id="chart"></div>
     <script src="echarts.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/echarts@5.3.1/dist/echarts.min.js"></script>
     <script src="hotel.js"></script>
