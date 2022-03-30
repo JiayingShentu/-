@@ -217,6 +217,7 @@ function drawChart() {
 drawChart();
 
 function show(obj) {
+
     var head = ['month', 'female', 'local', 'USA', 'SA', 'EU', 'MEA', 'ASL',
         'businessmen', 'tourists', 'DR', 'agency', 'AC', 'u20', '20to35', '35to55',
         'm55', 'price', 'LoS', 'occupancy', 'conventions'
@@ -226,59 +227,91 @@ function show(obj) {
         if (obj.innerHTML == head[i]) index = i;
     }
 
+    // 原始数据
+    var datax = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+    var datay = [120, 200, 150, 80, 70, 110, 130];
+
     //得到数据
     var rows = document.getElementsByClassName('row');
     var months = [];
     var tmpData = [];
-    var str = '';
     for (let j = 0; j < rows.length; j++) {
         var items = rows[j].getElementsByClassName('edit');
         months[j] = items[0].innerHTML;
         tmpData[j] = parseInt(items[index].innerHTML);
     }
-    if (index >= 2 && index <= 16) {
-        str = ' /%';
-    } else {
-        str = '';
+
+    var width = 1000,
+        height = 400,
+        padding = {
+            top: 10,
+            right: 40,
+            bottom: 40,
+            left: 40
+        };
+
+    var textSvg = document.getElementById("test-svg")
+    textSvg.innerHTML = ''
+
+    var svg = d3.select("#test-svg")
+        .append('svg')
+        .attr('width', width + 'px')
+        .attr('height', height + 'px');
+
+    // x轴
+    var rangex = [];
+    for (let i = 0; i < months.length; i++) {
+        rangex[i] = i * 50 + 100;
     }
 
-    //展示数据
-    var chartDom = document.getElementById('chart');
-    var myChart = echarts.init(chartDom);
-    var option;
-    option = {
+    var xScale = d3.scaleOrdinal()
+        .domain(months)
+        .range(rangex);
+    var xAxis = d3.axisBottom()
+        .scale(xScale);
+    svg.append('g')
+        .call(xAxis)
+        .attr("transform", "translate(0," + (height - padding.bottom) + ")")
+        .selectAll("text")
+        .attr("dx", "50px");
 
-        title: {
-            left: 'center',
-            text: head[index] + ' chart'
+    // y轴      
+    var yScale = d3.scaleLinear()
+        .domain([0, d3.max(tmpData)])
+        .range([height - padding.bottom, padding.top]);
+    var yAxis = d3.axisLeft()
+        .scale(yScale)
+        .ticks(10);
+    svg.append('g')
+        .call(yAxis)
+        .attr("transform", "translate(" + 100 + ",0)");
 
-        },
-        grid: {
-            x: 40,
-            y: 72,
-            x2: 10,
-            y2: 64,
-        },
-        xAxis: {
-            type: 'category',
-            data: months,
-            name: 'month',
-            nameLocation: 'center',
-            nameTextStyle: { lineHeight: 28 }
-        },
-        yAxis: {
-            type: 'value',
-            name: head[index] + str,
-            nameLocation: 'center',
-            nameTextStyle: { lineHeight: 36 }
-        },
-        series: [{
-            data: tmpData,
-            type: 'line'
-        }, {
-            data: tmpData,
-            type: 'bar'
-        }]
-    };
-    myChart.setOption(option);
+    var bar = svg.selectAll(".bar")
+        .data(tmpData)
+        .enter().append("g")
+        .attr("class", "bar")
+        .attr("transform", function(d, i) {
+            return "translate(" + xScale(i * 100) + "," + yScale(d) + ")";
+        });
+
+    bar.append("rect")
+        .attr("x", 1)
+        .attr("width", 50)
+        .attr("height", function(d) {
+            return height - yScale(d) - padding.bottom;
+        })
+        .attr("stroke", "White")
+        .attr("fill", "skyblue");
+    var dataDot = [];
+    for (let i = 0; i < tmpData.length; i++) {
+        var tmp = [i, tmpData[i]];
+        dataDot[i] = tmp;
+    }
+    var lineFunc = d3.line()
+        .x(function(d) { return 50 * d[0] + 125 })
+        .y(function(d) { return yScale(d[1]) })
+    svg.append("path")
+        .attr('d', lineFunc(dataDot))
+        .attr('stroke', 'blue')
+        .attr('fill', 'none')
 }
