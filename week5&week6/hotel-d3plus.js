@@ -30,7 +30,7 @@ function csvToTable(content) {
         var tr = document.createElement("tr");
         tr.setAttribute('class', 'row');
 
-        addItem(tr, i); //月份
+        addItem(tr, i, 'month'); //月份
 
         for (j = 0; j < array.length; j++) { //内容遍历
             addItem(tr, array[j]);
@@ -40,10 +40,12 @@ function csvToTable(content) {
         oBody.appendChild(tr);
     }
     judge();
+    drawChart();
 }
 
-function addItem(father, son) {
+function addItem(father, son, type) {
     var td = document.createElement("td");
+    if (type == 'month') { td.setAttribute('class', 'month') }
     var span = document.createElement('span');
     if (son == 'delete') {
         span.setAttribute('class', 'del');
@@ -109,7 +111,6 @@ function edit(obj) {
 
 function saveFile() {
     var str = "";
-
     //字段名
     var head = document.getElementsByTagName('th');
     for (let i = 0; i < head.length - 1; i++) {
@@ -132,7 +133,6 @@ function saveFile() {
         }
         str += "\n";
     }
-
     download("data.csv", str);
 }
 
@@ -203,111 +203,121 @@ function judge() {
             }
         }
     }
-
 }
 
 function drawChart() {
-    var thead = document.getElementsByTagName('thead')[0];
-    var head = thead.getElementsByTagName('th');
-    for (let i = 1; i < head.length - 1; i++) {
-        head[i].setAttribute('onclick', 'show(this)');
+    var tRows = document.getElementsByClassName('row');
+    console.log(tRows.length)
+    for (let i = 0; i < tRows.length; i++) {
+        var month = tRows[i].getElementsByTagName('td')[0];
+        console.log(month);
+        month.setAttribute('onclick', 'showPie(this)');
+        month.onmouseover = function() { color(this) }
     }
 }
 
-drawChart();
+function color(obj) {
+    obj.backgroundColor = 'red'
+}
 
-function show(obj) {
+function showPie(obj) {
 
-    var head = ['month', 'female', 'local', 'USA', 'SA', 'EU', 'MEA', 'ASL',
-        'businessmen', 'tourists', 'DR', 'agency', 'AC', 'u20', '20to35', '35to55',
-        'm55', 'price', 'LoS', 'occupancy', 'conventions'
-    ];
-    var index;
-    for (let i = 0; i < head.length; i++) {
-        if (obj.innerHTML == head[i]) index = i;
+    var width = 450
+    height = 450
+    margin = 150
+
+    var radius = Math.min(width, height) / 2 - margin
+
+    var svg = d3.select("#chart1")
+        .append("svg")
+        .attr("width", width)
+        .attr("height", height)
+        .append("g")
+        .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+
+    var area = [];
+    var parent = obj.parentNode;
+    console.log(parent)
+
+    for (let i = 0; i < 6; i++) {
+        area[i] = parseInt(parent.getElementsByClassName('edit')[i + 2].innerHTML)
     }
-
-    //得到数据
-    var rows = document.getElementsByClassName('row');
-    var months = [];
-    var tmpData = [];
-    for (let j = 0; j < rows.length; j++) {
-        var items = rows[j].getElementsByClassName('edit');
-        months[j] = items[0].innerHTML;
-        tmpData[j] = parseInt(items[index].innerHTML);
+    var data = {
+        local: area[0],
+        USA: area[1],
+        SA: area[2],
+        EU: area[3],
+        MEA: area[4],
+        ASL: area[5]
     }
+    console.log(area)
 
-    var width = 1000,
-        height = 400,
-        padding = {
-            top: 10,
-            right: 40,
-            bottom: 40,
-            left: 40
-        };
+    var color = d3.scaleOrdinal()
+        .range(["#BBDEFB", "#98CAF9", "#64B5F6", "#42A5F5", "#2196F3", "#1E88E5"]);
 
-    var textSvg = document.getElementById("test-svg")
-    textSvg.innerHTML = ''
-
-    var svg = d3.select("#test-svg")
-        .append('svg')
-        .attr('width', width + 'px')
-        .attr('height', height + 'px');
-
-    // x轴
-    var rangex = [];
-    for (let i = 0; i < months.length; i++) {
-        rangex[i] = i * 50 + 100;
-    }
-
-    var xScale = d3.scaleOrdinal()
-        .domain(months)
-        .range(rangex);
-    var xAxis = d3.axisBottom()
-        .scale(xScale);
-    svg.append('g')
-        .call(xAxis)
-        .attr("transform", "translate(0," + (height - padding.bottom) + ")")
-        .selectAll("text")
-        .attr("dx", "50px");
-
-    // y轴      
-    var yScale = d3.scaleLinear()
-        .domain([0, d3.max(tmpData)])
-        .range([height - padding.bottom, padding.top]);
-    var yAxis = d3.axisLeft()
-        .scale(yScale)
-        .ticks(10);
-    svg.append('g')
-        .call(yAxis)
-        .attr("transform", "translate(" + 100 + ",0)");
-
-    var bar = svg.selectAll(".bar")
-        .data(tmpData)
-        .enter().append("g")
-        .attr("class", "bar")
-        .attr("transform", function(d, i) {
-            return "translate(" + xScale(i * 100) + "," + yScale(d) + ")";
-        });
-
-    bar.append("rect")
-        .attr("x", 1)
-        .attr("width", 50)
-        .attr("height", function(d) {
-            return height - yScale(d) - padding.bottom;
+    // Compute the position of each group on the pie:
+    var pie = d3.pie()
+        .value(function(d) {
+            return d.value;
         })
-        .attr("stroke", "White")
-        .attr("fill", "skyblue");
-    var dataDot = [];
-    for (let i = 0; i < tmpData.length; i++) {
-        var tmp = [i, tmpData[i]];
-        dataDot[i] = tmp;
-    }
-    var lineFunc = d3.line()
-        .x(function(d) { return 50 * d[0] + 125 })
-        .y(function(d) { return yScale(d[1]) })
-    svg.append("path")
-        .attr('d', lineFunc(dataDot))
-        .attr('stroke', 'blue')
-        .attr('fill', 'none')
+    var data_ready = pie(d3.entries(data))
+        // Now I know that group A goes from 0 degrees to x degrees and so on.
+
+    // shape helper to build arcs:
+    var arcGenerator = d3.arc()
+        .innerRadius(0)
+        .outerRadius(radius)
+
+    // Build the pie chart: Basically, each part of the pie is a path that we build using the arc function.
+    svg
+        .selectAll('mySlices')
+        .data(data_ready)
+        .enter()
+        .append('path')
+        .attr('d', arcGenerator)
+        .attr('fill', function(d) {
+            return (color(d.data.key))
+        })
+        .attr("stroke", "black")
+        .style("stroke-width", "2px")
+        .style("opacity", 0.7)
+
+    // Now add the annotation. Use the centroid method to get the best coordinates
+    svg
+        .selectAll('mySlices')
+        .data(data_ready)
+        .enter()
+        .append('text')
+        .text(function(d) {
+            return d.data.key
+        })
+        .attr("transform", function(d) {
+            //return "translate(" + arcGenerator.centroid(d) + ")";
+            var x = arcGenerator.centroid(d)[0] * 2.8;
+            var y = arcGenerator.centroid(d)[1] * 2.8;
+            return 'translate(' + x + ', ' + y + ')';
+        })
+        .style("text-anchor", "middle")
+        .style("font-size", 12)
+    svg
+        .selectAll('mySlices')
+        .data(data_ready)
+        .enter()
+        .append('line')
+        .attr('stroke', 'black')
+        .attr('x1', function(d) { return arcGenerator.centroid(d)[0] * 2; })
+        .attr('y1', function(d) { return arcGenerator.centroid(d)[1] * 2; })
+        .attr('x2', function(d, i) {
+            return arcGenerator.centroid(d)[0] * 2.5;
+        })
+        .attr('y2', function(d, i) {
+            return arcGenerator.centroid(d)[1] * 2.5;
+        });
+    svg
+        .append('text')
+        .text(function() { return 'areas coming from' })
+        .attr("transform", function() {
+            return 'translate(-60,-150)'
+        })
+
 }

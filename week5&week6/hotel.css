@@ -61,13 +61,21 @@ table th {
 }
 
 table .head:hover {
-    background-color: rgb(209, 237, 250);
+    /*background-color: rgb(209, 237, 250);*/
 }
 
 table td {
     height: 30px;
     word-wrap: break-word;
     word-break: break-all;
+}
+
+table .month {
+    background-color: white;
+}
+
+table .month:hover {
+    background-color: #87ceeb;
 }
 
 table .del {
