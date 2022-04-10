@@ -216,9 +216,6 @@ function drawChart() {
     }
 }
 
-function color(obj) {
-    obj.backgroundColor = 'red'
-}
 
 function showPie(obj) {
 
@@ -255,20 +252,20 @@ function showPie(obj) {
     var color = d3.scaleOrdinal()
         .range(["#BBDEFB", "#98CAF9", "#64B5F6", "#42A5F5", "#2196F3", "#1E88E5"]);
 
-    // Compute the position of each group on the pie:
+
     var pie = d3.pie()
         .value(function(d) {
             return d.value;
         })
     var data_ready = pie(d3.entries(data))
-        // Now I know that group A goes from 0 degrees to x degrees and so on.
 
-    // shape helper to build arcs:
+
+
     var arcGenerator = d3.arc()
         .innerRadius(0)
         .outerRadius(radius)
 
-    // Build the pie chart: Basically, each part of the pie is a path that we build using the arc function.
+
     svg
         .selectAll('mySlices')
         .data(data_ready)
@@ -282,7 +279,7 @@ function showPie(obj) {
         .style("stroke-width", "2px")
         .style("opacity", 0.7)
 
-    // Now add the annotation. Use the centroid method to get the best coordinates
+
     svg
         .selectAll('mySlices')
         .data(data_ready)
@@ -292,7 +289,6 @@ function showPie(obj) {
             return d.data.key
         })
         .attr("transform", function(d) {
-            //return "translate(" + arcGenerator.centroid(d) + ")";
             var x = arcGenerator.centroid(d)[0] * 2.8;
             var y = arcGenerator.centroid(d)[1] * 2.8;
             return 'translate(' + x + ', ' + y + ')';
@@ -319,5 +315,15 @@ function showPie(obj) {
         .attr("transform", function() {
             return 'translate(-60,-150)'
         })
+}
+
+function showHeatmap() {
+    var array_data = [];
+    var width = 960,
+        height = 500,
+        buckets = 9,
+        days = ["1", "2", "3", "4", "5", "6", "7"],
+        colors = ["#ffffd9", "#edf8b1", "#c7e9b4", "#7fcdbb", "#41b6c4", "#1d91c0", "#225ea8", "#253494", "#081d58"],
+
 
 }
