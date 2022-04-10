@@ -41,6 +41,7 @@ function csvToTable(content) {
     }
     judge();
     drawChart();
+    showHeatmap();
 }
 
 function addItem(father, son, type) {
@@ -212,7 +213,6 @@ function drawChart() {
         var month = tRows[i].getElementsByTagName('td')[0];
         console.log(month);
         month.setAttribute('onclick', 'showPie(this)');
-        month.onmouseover = function() { color(this) }
     }
 }
 
@@ -318,12 +318,77 @@ function showPie(obj) {
 }
 
 function showHeatmap() {
-    var array_data = [];
-    var width = 960,
-        height = 500,
-        buckets = 9,
-        days = ["1", "2", "3", "4", "5", "6", "7"],
-        colors = ["#ffffd9", "#edf8b1", "#c7e9b4", "#7fcdbb", "#41b6c4", "#1d91c0", "#225ea8", "#253494", "#081d58"],
+    var margin = 30,
+        width = 560,
+        height = 300
+        //设置chart,svg
+    var svg = d3.select("#chart2")
+        .append("svg")
+        .attr("width", width + margin)
+        .attr("height", height + margin * 2)
+        .append("g") //在svg内加入一个group
+        .attr("transform", "translate(" + margin + "," + margin + ")")
+    var g = svg.select('g');
+
+    var tRows = document.getElementsByClassName('row');
+    console.log(tRows.length)
+    var months = []; //月份
+    for (let i = 0; i < tRows.length; i++) {
+        months[i] = tRows[i].getElementsByTagName('td')[0].getElementsByTagName('span')[0].innerHTML;
+    }
+    var areas = ["local", "USA", "SA", "EU", "MEA", "ASL"];
+    var dataset = [];
 
 
+    for (let i = 0; i < tRows.length; i++) {
+        var month = tRows[i].getElementsByClassName("month")[0].getElementsByTagName("span")[0].innerHTML;
+        var data = []
+        for (let j = 0; j < 6; j++) {
+            data[j] = parseInt(tRows[i].getElementsByClassName('edit')[j + 2].innerHTML)
+        }
+        /*dataset[i] = [{ 'month': month, 'area': areas[0], 'data': data[0] },
+            { 'month': month, 'area': areas[1], 'data': data[1] },
+            { 'month': month, 'area': areas[2], 'data': data[2] },
+            { 'month': month, 'area': areas[3], 'data': data[3] },
+            { 'month': month, 'area': areas[4], 'data': data[4] },
+            { 'month': month, 'area': areas[5], 'data': data[5] }
+        ]*/
+        dataset.push({ 'month': month, 'area': areas[0], 'data': data[0] })
+        dataset.push({ 'month': month, 'area': areas[1], 'data': data[1] })
+        dataset.push({ 'month': month, 'area': areas[2], 'data': data[2] })
+        dataset.push({ 'month': month, 'area': areas[3], 'data': data[3] })
+        dataset.push({ 'month': month, 'area': areas[4], 'data': data[4] })
+        dataset.push({ 'month': month, 'area': areas[5], 'data': data[5] })
+
+    }
+    console.log(months, areas, dataset)
+
+    //x轴
+    const x = d3.scaleBand()
+        .range([0, width])
+        .domain(months)
+        .padding(0.05);
+    svg.append("g")
+        .attr("transform", 'translate(0,' + height + ')')
+        .call(d3.axisBottom(x));
+
+    //y轴
+    const y = d3.scaleBand()
+        .range([height, 0])
+        .domain(areas)
+    svg.append("g")
+        .call(d3.axisLeft(y));
+
+    const setColor = d3.scaleLinear()
+        .range(["white", "#148cfc"])
+        .domain([0, 100])
+
+    svg.selectAll()
+        .data(dataset, function(d) { return d.month + ':' + d.area; })
+        .enter().append("svg:rect")
+        .attr("x", function(d) { return x(d.month) })
+        .attr("y", function(d) { return y(d.area) })
+        .attr("width", (width - margin) / months.length)
+        .attr("height", (height - margin) / 6)
+        .style("fill", function(d) { return setColor(d.data) })
 }
