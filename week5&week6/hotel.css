@@ -61,7 +61,7 @@ table th {
 }
 
 table .head:hover {
-    /*background-color: rgb(209, 237, 250);*/
+    background-color: rgb(209, 237, 250);
 }
 
 table td {

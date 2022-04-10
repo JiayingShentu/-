@@ -214,11 +214,17 @@ function drawChart() {
         console.log(month);
         month.setAttribute('onclick', 'showPie(this)');
     }
+
+    var thead = document.getElementsByTagName('thead')[0];
+    var head = thead.getElementsByTagName('th');
+    for (let i = 1; i < head.length - 1; i++) {
+        head[i].setAttribute('onclick', 'showHistogram(this)');
+    }
 }
 
-
 function showPie(obj) {
-
+    document.getElementById("chart1").innerHTML = ''
+    innerHTML = ''
     var width = 450
     height = 450
     margin = 150
@@ -391,4 +397,92 @@ function showHeatmap() {
         .attr("width", (width - margin) / months.length)
         .attr("height", (height - margin) / 6)
         .style("fill", function(d) { return setColor(d.data) })
+
+}
+
+function showHistogram(obj) {
+
+    var head = ['month', 'female', 'local', 'USA', 'SA', 'EU', 'MEA', 'ASL',
+        'businessmen', 'tourists', 'DR', 'agency', 'AC', 'u20', '20to35', '35to55',
+        'm55', 'price', 'LoS', 'occupancy', 'conventions'
+    ];
+    var index;
+    for (let i = 0; i < head.length; i++) {
+        if (obj.innerHTML == head[i]) index = i;
+    }
+
+    //得到数据
+    var rows = document.getElementsByClassName('row');
+    var months = [];
+    var tmpData = [];
+    for (let j = 0; j < rows.length; j++) {
+        var items = rows[j].getElementsByClassName('edit');
+        months[j] = items[0].innerHTML;
+        tmpData[j] = parseInt(items[index].innerHTML);
+    }
+
+    var width = 1000,
+        height = 400,
+        padding = {
+            top: 10,
+            right: 40,
+            bottom: 40,
+            left: 40
+        };
+
+    var textSvg = document.getElementById("test-svg")
+    textSvg.innerHTML = ''
+
+    var svg = d3.select("#chart3")
+        .append('svg')
+        .attr('width', width + 'px')
+        .attr('height', height + 'px');
+
+    // x轴
+    var rangex = [];
+    for (let i = 0; i < months.length; i++) {
+        rangex[i] = i * 50 + 100;
+    }
+
+    var xScale = d3.scaleOrdinal()
+        .domain(months)
+        .range(rangex);
+    var xAxis = d3.axisBottom()
+        .scale(xScale);
+    svg.append('g')
+        .call(xAxis)
+        .attr("transform", "translate(0," + (height - padding.bottom) + ")")
+        .selectAll("text")
+        .attr("dx", "50px");
+
+    // y轴      
+    var yScale = d3.scaleLinear()
+        .domain([0, d3.max(tmpData)])
+        .range([height - padding.bottom, padding.top]);
+    var yAxis = d3.axisLeft()
+        .scale(yScale)
+        .ticks(10);
+    svg.append('g')
+        .call(yAxis)
+        .attr("transform", "translate(" + 100 + ",0)");
+
+    var bar = svg.selectAll(".bar")
+        .data(tmpData)
+        .enter().append("g")
+        .attr("class", "bar")
+        .attr("transform", function(d, i) {
+            return "translate(" + xScale(i * 100) + "," + yScale(d) + ")";
+        });
+
+    bar.append("rect")
+        .attr("x", 1)
+        .attr("width", 50)
+        .attr("height", function(d) {
+            return height - yScale(d) - padding.bottom;
+        })
+        .attr("stroke", "White")
+        .attr("fill", "skyblue");
+
+
+
 }
